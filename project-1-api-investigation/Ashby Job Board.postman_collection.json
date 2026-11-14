@@ -1,0 +1,56 @@
+{
+  "info": {
+    "_postman_id": "b5292bf1-5f26-4500-badb-6cba9f0b9838",
+    "name": "Ashby Job Board",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "60131806",
+    "_collection_link": "https://go.postman.co/collection/60131806-b5292bf1-5f26-4500-badb-6cba9f0b9838?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Get all jobs",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status is 200\", function () {\r\n  pm.response.to.have.status(200);\r\n});\r\n\r\nconst data = pm.response.json();\r\n\r\npm.test(\"Response has a jobs list\", function () {\r\n  pm.expect(data.jobs).to.be.an(\"array\");\r\n});\r\n\r\npm.test(\"Every job has a title and jobUrl\", function () {\r\n  data.jobs.forEach(function (job) {\r\n    pm.expect(job.title).to.be.a(\"string\");\r\n    pm.expect(job.jobUrl).to.be.a(\"string\");\r\n  });\r\n});\r\n\r\nconsole.log(\"Number of jobs:\", data.jobs.length);\r\n\r\ndata.jobs\r\n  .filter(function (job) { return job.title.includes(\"Support\"); })\r\n  .forEach(function (job) { console.log(job.title + \" | \" + job.jobUrl); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://api.ashbyhq.com/posting-api/job-board/{{board}}?includeCompensation=true",
+          "protocol": "https",
+          "host": [
+            "api",
+            "ashbyhq",
+            "com"
+          ],
+          "path": [
+            "posting-api",
+            "job-board",
+            "{{board}}"
+          ],
+          "query": [
+            {
+              "key": "includeCompensation",
+              "value": "true"
+            }
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "board",
+      "value": ""
+    }
+  ]
+}
